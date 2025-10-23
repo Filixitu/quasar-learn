@@ -1,5 +1,6 @@
 <template>
-  <q-item clickable tag="a" target="_blank" :href="props.link">
+  <q-item clickable :tag="isExternal ? 'a' : 'div'" :target="isExternal ? '_blank' : undefined"
+    :href="isExternal ? props.link : undefined" :to="isExternal ? undefined : props.link">
     <q-item-section v-if="props.icon" avatar>
       <q-icon :name="props.icon" />
     </q-item-section>
@@ -12,6 +13,8 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+
 const props = defineProps({
   title: {
     type: String,
@@ -32,5 +35,9 @@ const props = defineProps({
     type: String,
     default: '',
   },
+})
+
+const isExternal = computed(() => {
+  return props.link.startsWith('http')
 })
 </script>
