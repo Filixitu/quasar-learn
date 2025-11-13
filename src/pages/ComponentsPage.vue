@@ -148,6 +148,8 @@ import InfiniteScrollDemo from '../components/demos/InfiniteScrollDemo.vue'
 import ComposablesDemo from '../components/demos/ComposablesDemo.vue'
 import UtilsDemo from '../components/demos/UtilsDemo.vue'
 import I18nDemo from '../components/demos/I18nDemo.vue'
+import ThreeJSDemo from '../components/demos/ThreeJSDemo.vue'
+import Model3DDemo from '../components/demos/Model3DDemo.vue'
 
 // 组件映射
 const componentMap = {
@@ -188,6 +190,8 @@ const componentMap = {
   ComposablesDemo,
   UtilsDemo,
   I18nDemo,
+  ThreeJSDemo,
+  Model3DDemo,
 }
 
 const selectedComponent = ref('ButtonDemo')
@@ -269,6 +273,14 @@ const categories = [
       { id: 'RouterDemo', name: 'Router 路由管理', description: '路由配置和导航' },
       { id: 'ComposablesDemo', name: 'Composables 组合式函数', description: 'Vue 组合式函数详解' },
       { id: 'UtilsDemo', name: 'Utils 工具函数', description: 'Quasar 实用工具函数大全' },
+    ]
+  },
+  {
+    label: '3D 图形渲染',
+    icon: 'view_in_ar',
+    components: [
+      { id: 'ThreeJSDemo', name: 'Three.js 3D 场景', description: 'WebGL 3D 图形渲染和动画演示' },
+      { id: 'Model3DDemo', name: '3D 模型加载器', description: '支持 GLTF、FBX、OBJ 等格式的 3D 模型加载' },
     ]
   },
 ]

@@ -1,0 +1,85 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "Sample GLTF for Three.js Demo"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [0]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1
+          },
+          "indices": 2,
+          "material": 0
+        }
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [0.8, 0.2, 0.2, 1.0],
+        "metallicFactor": 0.1,
+        "roughnessFactor": 0.8
+      }
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 8,
+      "type": "VEC3",
+      "max": [1.0, 1.0, 1.0],
+      "min": [-1.0, -1.0, -1.0]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 8,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5123,
+      "count": 36,
+      "type": "SCALAR"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 96
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 96,
+      "byteLength": 96
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 192,
+      "byteLength": 72
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "data:application/octet-stream;base64,AAABAACAP4AAAEAAAABA/wAAgD9AAIBAAAAAQAAAAEAAgEBAAAAAQACAPz+AAAEBAACAP0AAgD9AAIBAAAAAQACAPz+AAABBAACAPz+AAABA/wAAgL9AAIBAAAAAAAAAAD+AAABA/wAAgD8AAAAAAAAAP4AAAAAAAIA/gAAAAEAAgD8AAAAAAIA/gAAAAEAAgD8AAAAAAIA/gAAAAD+AAABAAAAAP4AAAAAAAIA/gAAAAD+AAABAAAAAP4AAAAAAAIA/gAAAAD+AAABAAAAAP4AAAAAAAIA/gAAAAD+AAABAAAAAP4AAAAAAAIA/gAAAAD+AAABAAAAAP4AAAAAAAIA/gAAAAD+AAABAAAAAP4AAAAAAAIA/gAAAAAAAAAAAAAAAAAAAAAAAEAAgAAAAQAABABAAEAAEAAQABAAEAAgAAAAQAABABAAEAAEAAQABAAEAAgAAAAQAABABAAEAAEAAQABAAEAAEAAQABAAEAAEAAQABAAEAAEAAQABAAEAAgAAAAQAABABAAEAAEAAQABAAEAAgAAAAQAABABAAEAAEAAQABAAEAAEAAQABAAEAAEAAQABAAEAAEAAQABAAEAAIAAAAQ=",
+      "byteLength": 264
+    }
+  ]
+}
