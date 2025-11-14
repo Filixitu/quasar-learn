@@ -5,6 +5,7 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
       { path: 'components', component: () => import('pages/ComponentsPage.vue') },
+      { path: 'cordova', component: () => import('pages/CordovaPluginsPage.vue') },
     ],
   },
 

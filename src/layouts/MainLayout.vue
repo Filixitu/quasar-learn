@@ -86,6 +86,12 @@ const linksList = [
     link: '/components',
   },
   {
+    title: 'Cordova插件',
+    caption: '移动端插件演示',
+    icon: 'extension',
+    link: '/cordova',
+  },
+  {
     title: 'Docs',
     caption: 'quasar.dev',
     icon: 'school',

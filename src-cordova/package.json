@@ -1,0 +1,48 @@
+{
+  "name": "io.filixitu.quasarlearn",
+  "displayName": "Quasar App",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cordova-ios": "^7.1.1",
+    "cordova-plugin-battery-status": "^2.0.3",
+    "cordova-plugin-camera": "^8.0.0",
+    "cordova-plugin-contacts": "^3.0.1",
+    "cordova-plugin-device": "^3.0.0",
+    "cordova-plugin-device-motion": "^2.0.1",
+    "cordova-plugin-geolocation": "^5.0.0",
+    "cordova-plugin-ionic-webview": "^5.0.1",
+    "cordova-plugin-media": "^7.0.0",
+    "cordova-plugin-media-capture": "^6.0.0",
+    "cordova-plugin-network-information": "^3.0.0",
+    "cordova-plugin-splashscreen": "^6.0.2",
+    "cordova-plugin-statusbar": "^4.0.0",
+    "cordova-plugin-vibration": "^3.1.1"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-battery-status": {},
+      "cordova-plugin-camera": {},
+      "cordova-plugin-contacts": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-device-motion": {},
+      "cordova-plugin-geolocation": {},
+      "cordova-plugin-media": {},
+      "cordova-plugin-media-capture": {},
+      "cordova-plugin-network-information": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-vibration": {},
+      "cordova-plugin-statusbar": {}
+    }
+  }
+}

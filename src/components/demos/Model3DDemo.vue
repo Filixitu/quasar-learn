@@ -92,31 +92,120 @@
                       <!-- 模型变换控制 -->
                       <div v-if="selectedModelId === modelData.id" class="model-transforms">
                         <div class="transform-section">
-                          <div class="transform-title">位置控制</div>
+                          <div class="transform-title">
+                            位置控制
+                            <q-btn 
+                              :color="modelData.dragEnabled ? 'positive' : 'grey-6'" 
+                              :icon="modelData.dragEnabled ? 'pan_tool' : 'pan_tool_alt'"
+                              size="xs" 
+                              round 
+                              flat
+                              @click="toggleModelDrag(modelData.id)"
+                              :title="modelData.dragEnabled ? '禁用拖拽' : '启用拖拽'"
+                              class="drag-toggle-btn" />
+                          </div>
                           <div class="transform-controls">
                             <div class="transform-control">
                               <span class="transform-label">X</span>
-                              <q-slider v-model="modelData.position.x" :min="-10" :max="10" :step="0.1"
+                              <q-slider v-model="modelData.position.x" :min="-20" :max="20" :step="0.01"
                                 @update:model-value="updateModelTransform(modelData.id, { position: modelData.position })"
                                 color="red" size="sm" />
-                              <span class="transform-value">{{
-                                modelData.position.x.toFixed(1) }}</span>
+                              <span class="transform-value">{{  
+                                modelData.position.x.toFixed(2) }}</span>
+                              <div class="control-buttons">
+                                <q-btn dense flat size="xs" icon="remove" color="red" 
+                                  @mousedown="startContinuousClick(() => adjustPosition(modelData.id, 'x', -0.1))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustPosition(modelData.id, 'x', -0.1)"
+                                  title="减少 0.1 (可长按)" />
+                                <q-btn dense flat size="xs" icon="keyboard_double_arrow_left" color="red"
+                                  @mousedown="startContinuousClick(() => adjustPosition(modelData.id, 'x', -0.01))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustPosition(modelData.id, 'x', -0.01)"
+                                  title="减少 0.01 (可长按)" />
+                                <q-btn dense flat size="xs" icon="keyboard_double_arrow_right" color="red"
+                                  @mousedown="startContinuousClick(() => adjustPosition(modelData.id, 'x', 0.01))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustPosition(modelData.id, 'x', 0.01)"
+                                  title="增加 0.01 (可长按)" />
+                                <q-btn dense flat size="xs" icon="add" color="red"
+                                  @mousedown="startContinuousClick(() => adjustPosition(modelData.id, 'x', 0.1))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustPosition(modelData.id, 'x', 0.1)"
+                                  title="增加 0.1 (可长按)" />
+                              </div>
                             </div>
                             <div class="transform-control">
                               <span class="transform-label">Y</span>
-                              <q-slider v-model="modelData.position.y" :min="-5" :max="10" :step="0.1"
+                              <q-slider v-model="modelData.position.y" :min="-10" :max="20" :step="0.01"
                                 @update:model-value="updateModelTransform(modelData.id, { position: modelData.position })"
                                 color="green" size="sm" />
-                              <span class="transform-value">{{
-                                modelData.position.y.toFixed(1) }}</span>
+                              <span class="transform-value">{{  
+                                modelData.position.y.toFixed(2) }}</span>
+                              <div class="control-buttons">
+                                <q-btn dense flat size="xs" icon="remove" color="green" 
+                                  @mousedown="startContinuousClick(() => adjustPosition(modelData.id, 'y', -0.1))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustPosition(modelData.id, 'y', -0.1)"
+                                  title="减少 0.1 (可长按)" />
+                                <q-btn dense flat size="xs" icon="keyboard_double_arrow_left" color="green"
+                                  @mousedown="startContinuousClick(() => adjustPosition(modelData.id, 'y', -0.01))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustPosition(modelData.id, 'y', -0.01)"
+                                  title="减少 0.01 (可长按)" />
+                                <q-btn dense flat size="xs" icon="keyboard_double_arrow_right" color="green"
+                                  @mousedown="startContinuousClick(() => adjustPosition(modelData.id, 'y', 0.01))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustPosition(modelData.id, 'y', 0.01)"
+                                  title="增加 0.01 (可长按)" />
+                                <q-btn dense flat size="xs" icon="add" color="green"
+                                  @mousedown="startContinuousClick(() => adjustPosition(modelData.id, 'y', 0.1))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustPosition(modelData.id, 'y', 0.1)"
+                                  title="增加 0.1 (可长按)" />
+                              </div>
                             </div>
                             <div class="transform-control">
                               <span class="transform-label">Z</span>
-                              <q-slider v-model="modelData.position.z" :min="-10" :max="10" :step="0.1"
+                              <q-slider v-model="modelData.position.z" :min="-20" :max="20" :step="0.01"
                                 @update:model-value="updateModelTransform(modelData.id, { position: modelData.position })"
                                 color="blue" size="sm" />
-                              <span class="transform-value">{{
-                                modelData.position.z.toFixed(1) }}</span>
+                              <span class="transform-value">{{  
+                                modelData.position.z.toFixed(2) }}</span>
+                              <div class="control-buttons">
+                                <q-btn dense flat size="xs" icon="remove" color="blue" 
+                                  @mousedown="startContinuousClick(() => adjustPosition(modelData.id, 'z', -0.1))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustPosition(modelData.id, 'z', -0.1)"
+                                  title="减少 0.1 (可长按)" />
+                                <q-btn dense flat size="xs" icon="keyboard_double_arrow_left" color="blue"
+                                  @mousedown="startContinuousClick(() => adjustPosition(modelData.id, 'z', -0.01))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustPosition(modelData.id, 'z', -0.01)"
+                                  title="减少 0.01 (可长按)" />
+                                <q-btn dense flat size="xs" icon="keyboard_double_arrow_right" color="blue"
+                                  @mousedown="startContinuousClick(() => adjustPosition(modelData.id, 'z', 0.01))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustPosition(modelData.id, 'z', 0.01)"
+                                  title="增加 0.01 (可长按)" />
+                                <q-btn dense flat size="xs" icon="add" color="blue"
+                                  @mousedown="startContinuousClick(() => adjustPosition(modelData.id, 'z', 0.1))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustPosition(modelData.id, 'z', 0.1)"
+                                  title="增加 0.1 (可长按)" />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -126,30 +215,102 @@
                           <div class="transform-controls">
                             <div class="transform-control">
                               <span class="transform-label">X</span>
-                              <q-slider v-model="modelData.rotation.x" :min="-3.14" :max="3.14" :step="0.1"
+                              <q-slider v-model="modelData.rotation.x" :min="-3.14" :max="3.14" :step="0.01"
                                 @update:model-value="updateModelTransform(modelData.id, { rotation: modelData.rotation })"
                                 color="red" size="sm" />
-                              <span class="transform-value">{{ (modelData.rotation.x * 180
-                                / Math.PI).toFixed(0)
-                                }}°</span>
+                              <span class="transform-value">{{ (modelData.rotation.x * 180 / Math.PI).toFixed(0) }}°</span>
+                              <div class="control-buttons">
+                                <q-btn dense flat size="xs" icon="remove" color="red" 
+                                  @mousedown="startContinuousClick(() => adjustRotation(modelData.id, 'x', -0.1))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustRotation(modelData.id, 'x', -0.1)"
+                                  title="逆时针 0.1 弧度 (可长按)" />
+                                <q-btn dense flat size="xs" icon="keyboard_double_arrow_left" color="red"
+                                  @mousedown="startContinuousClick(() => adjustRotation(modelData.id, 'x', -0.01))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustRotation(modelData.id, 'x', -0.01)"
+                                  title="逆时针 0.01 弧度 (可长按)" />
+                                <q-btn dense flat size="xs" icon="keyboard_double_arrow_right" color="red"
+                                  @mousedown="startContinuousClick(() => adjustRotation(modelData.id, 'x', 0.01))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustRotation(modelData.id, 'x', 0.01)"
+                                  title="顺时针 0.01 弧度 (可长按)" />
+                                <q-btn dense flat size="xs" icon="add" color="red"
+                                  @mousedown="startContinuousClick(() => adjustRotation(modelData.id, 'x', 0.1))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustRotation(modelData.id, 'x', 0.1)"
+                                  title="顺时针 0.1 弧度 (可长按)" />
+                              </div>
                             </div>
                             <div class="transform-control">
                               <span class="transform-label">Y</span>
-                              <q-slider v-model="modelData.rotation.y" :min="-3.14" :max="3.14" :step="0.1"
+                              <q-slider v-model="modelData.rotation.y" :min="-3.14" :max="3.14" :step="0.01"
                                 @update:model-value="updateModelTransform(modelData.id, { rotation: modelData.rotation })"
                                 color="green" size="sm" />
-                              <span class="transform-value">{{ (modelData.rotation.y * 180
-                                / Math.PI).toFixed(0)
-                                }}°</span>
+                              <span class="transform-value">{{ (modelData.rotation.y * 180 / Math.PI).toFixed(0) }}°</span>
+                              <div class="control-buttons">
+                                <q-btn dense flat size="xs" icon="remove" color="green" 
+                                  @mousedown="startContinuousClick(() => adjustRotation(modelData.id, 'y', -0.1))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustRotation(modelData.id, 'y', -0.1)"
+                                  title="逆时针 0.1 弧度 (可长按)" />
+                                <q-btn dense flat size="xs" icon="keyboard_double_arrow_left" color="green"
+                                  @mousedown="startContinuousClick(() => adjustRotation(modelData.id, 'y', -0.01))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustRotation(modelData.id, 'y', -0.01)"
+                                  title="逆时针 0.01 弧度 (可长按)" />
+                                <q-btn dense flat size="xs" icon="keyboard_double_arrow_right" color="green"
+                                  @mousedown="startContinuousClick(() => adjustRotation(modelData.id, 'y', 0.01))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustRotation(modelData.id, 'y', 0.01)"
+                                  title="顺时针 0.01 弧度 (可长按)" />
+                                <q-btn dense flat size="xs" icon="add" color="green"
+                                  @mousedown="startContinuousClick(() => adjustRotation(modelData.id, 'y', 0.1))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustRotation(modelData.id, 'y', 0.1)"
+                                  title="顺时针 0.1 弧度 (可长按)" />
+                              </div>
                             </div>
                             <div class="transform-control">
                               <span class="transform-label">Z</span>
-                              <q-slider v-model="modelData.rotation.z" :min="-3.14" :max="3.14" :step="0.1"
+                              <q-slider v-model="modelData.rotation.z" :min="-3.14" :max="3.14" :step="0.01"
                                 @update:model-value="updateModelTransform(modelData.id, { rotation: modelData.rotation })"
                                 color="blue" size="sm" />
-                              <span class="transform-value">{{ (modelData.rotation.z * 180
-                                / Math.PI).toFixed(0)
-                                }}°</span>
+                              <span class="transform-value">{{ (modelData.rotation.z * 180 / Math.PI).toFixed(0) }}°</span>
+                              <div class="control-buttons">
+                                <q-btn dense flat size="xs" icon="remove" color="blue" 
+                                  @mousedown="startContinuousClick(() => adjustRotation(modelData.id, 'z', -0.1))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustRotation(modelData.id, 'z', -0.1)"
+                                  title="逆时针 0.1 弧度 (可长按)" />
+                                <q-btn dense flat size="xs" icon="keyboard_double_arrow_left" color="blue"
+                                  @mousedown="startContinuousClick(() => adjustRotation(modelData.id, 'z', -0.01))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustRotation(modelData.id, 'z', -0.01)"
+                                  title="逆时针 0.01 弧度 (可长按)" />
+                                <q-btn dense flat size="xs" icon="keyboard_double_arrow_right" color="blue"
+                                  @mousedown="startContinuousClick(() => adjustRotation(modelData.id, 'z', 0.01))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustRotation(modelData.id, 'z', 0.01)"
+                                  title="顺时针 0.01 弧度 (可长按)" />
+                                <q-btn dense flat size="xs" icon="add" color="blue"
+                                  @mousedown="startContinuousClick(() => adjustRotation(modelData.id, 'z', 0.1))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustRotation(modelData.id, 'z', 0.1)"
+                                  title="顺时针 0.1 弧度 (可长按)" />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -159,15 +320,41 @@
                           <div class="transform-controls">
                             <div class="transform-control">
                               <span class="transform-label">均匀</span>
-                              <q-slider :model-value="modelData.scale.x" :min="0.01" :max="10" :step="0.05"
+                              <q-slider :model-value="modelData.scale.x" :min="0.01" :max="50" :step="0.01"
                                 @update:model-value="(val) => {
                                   modelData.scale.x = val;
                                   modelData.scale.y = val;
                                   modelData.scale.z = val;
                                   updateModelTransform(modelData.id, { scale: modelData.scale });
                                 }" color="purple" size="sm" />
-                              <span class="transform-value">{{
-                                modelData.scale.x.toFixed(2) }}</span>
+                              <span class="transform-value">{{  
+                                modelData.scale.x.toFixed(2) }}x</span>
+                              <div class="control-buttons">
+                                <q-btn dense flat size="xs" icon="remove" color="purple" 
+                                  @mousedown="startContinuousClick(() => adjustScale(modelData.id, -0.5))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustScale(modelData.id, -0.5)"
+                                  title="缩小 0.5 (可长按)" />
+                                <q-btn dense flat size="xs" icon="keyboard_double_arrow_left" color="purple"
+                                  @mousedown="startContinuousClick(() => adjustScale(modelData.id, -0.1))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustScale(modelData.id, -0.1)"
+                                  title="缩小 0.1 (可长按)" />
+                                <q-btn dense flat size="xs" icon="keyboard_double_arrow_right" color="purple"
+                                  @mousedown="startContinuousClick(() => adjustScale(modelData.id, 0.1))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustScale(modelData.id, 0.1)"
+                                  title="放大 0.1 (可长按)" />
+                                <q-btn dense flat size="xs" icon="add" color="purple"
+                                  @mousedown="startContinuousClick(() => adjustScale(modelData.id, 0.5))"
+                                  @mouseup="stopContinuousClick"
+                                  @mouseleave="stopContinuousClick"
+                                  @click="adjustScale(modelData.id, 0.5)"
+                                  title="放大 0.5 (可长按)" />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -490,6 +677,120 @@
                 </div>
               </div>
             </div>
+
+            <!-- 相机控制侧边栏 - 3D视图内覆盖层 -->
+            <div v-if="showCameraPanel" class="camera-sidebar">
+              <div class="sidebar-header">
+                <div class="sidebar-title">
+                  <q-icon name="videocam" class="q-mr-sm" />
+                  相机控制
+                </div>
+                <q-btn flat round size="sm" icon="close" @click="showCameraPanel = false" />
+              </div>
+              <div class="sidebar-content">
+                <div class="camera-controls">
+                  
+                  <!-- 相机位置控制 -->
+                  <div class="camera-control-section">
+                    <div class="section-title">
+                      <q-icon name="my_location" size="sm" color="teal" />
+                      <span>相机位置</span>
+                    </div>
+                    <div class="position-controls">
+                      <div class="axis-control">
+                        <span class="axis-label" style="color: #f44336;">X</span>
+                        <q-slider v-model="cameraControls.position.x" :min="-20" :max="20" :step="0.5"
+                          @update:model-value="updateCameraPosition" color="red" />
+                        <span class="axis-value">{{ cameraControls.position.x.toFixed(1) }}</span>
+                      </div>
+                      <div class="axis-control">
+                        <span class="axis-label" style="color: #4caf50;">Y</span>
+                        <q-slider v-model="cameraControls.position.y" :min="-10" :max="20" :step="0.5"
+                          @update:model-value="updateCameraPosition" color="green" />
+                        <span class="axis-value">{{ cameraControls.position.y.toFixed(1) }}</span>
+                      </div>
+                      <div class="axis-control">
+                        <span class="axis-label" style="color: #2196f3;">Z</span>
+                        <q-slider v-model="cameraControls.position.z" :min="-20" :max="20" :step="0.5"
+                          @update:model-value="updateCameraPosition" color="blue" />
+                        <span class="axis-value">{{ cameraControls.position.z.toFixed(1) }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 相机目标控制 -->
+                  <div class="camera-control-section">
+                    <div class="section-title">
+                      <q-icon name="center_focus_strong" size="sm" color="purple" />
+                      <span>观察目标</span>
+                    </div>
+                    <div class="position-controls">
+                      <div class="axis-control">
+                        <span class="axis-label" style="color: #f44336;">X</span>
+                        <q-slider v-model="cameraControls.target.x" :min="-10" :max="10" :step="0.1"
+                          @update:model-value="updateCameraTarget" color="red" />
+                        <span class="axis-value">{{ cameraControls.target.x.toFixed(1) }}</span>
+                      </div>
+                      <div class="axis-control">
+                        <span class="axis-label" style="color: #4caf50;">Y</span>
+                        <q-slider v-model="cameraControls.target.y" :min="-5" :max="10" :step="0.1"
+                          @update:model-value="updateCameraTarget" color="green" />
+                        <span class="axis-value">{{ cameraControls.target.y.toFixed(1) }}</span>
+                      </div>
+                      <div class="axis-control">
+                        <span class="axis-label" style="color: #2196f3;">Z</span>
+                        <q-slider v-model="cameraControls.target.z" :min="-10" :max="10" :step="0.1"
+                          @update:model-value="updateCameraTarget" color="blue" />
+                        <span class="axis-value">{{ cameraControls.target.z.toFixed(1) }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 相机预设视角 -->
+                  <div class="camera-control-section">
+                    <div class="section-title">
+                      <q-icon name="view_in_ar" size="sm" color="indigo" />
+                      <span>预设视角</span>
+                    </div>
+                    <div class="preset-buttons">
+                      <q-btn size="sm" color="primary" icon="north" label="前视图" 
+                        @click="setCameraPreset('front')" class="preset-btn" />
+                      <q-btn size="sm" color="secondary" icon="south" label="后视图" 
+                        @click="setCameraPreset('back')" class="preset-btn" />
+                      <q-btn size="sm" color="positive" icon="west" label="左视图" 
+                        @click="setCameraPreset('left')" class="preset-btn" />
+                      <q-btn size="sm" color="negative" icon="east" label="右视图" 
+                        @click="setCameraPreset('right')" class="preset-btn" />
+                      <q-btn size="sm" color="warning" icon="keyboard_arrow_up" label="顶视图" 
+                        @click="setCameraPreset('top')" class="preset-btn" />
+                      <q-btn size="sm" color="info" icon="keyboard_arrow_down" label="底视图" 
+                        @click="setCameraPreset('bottom')" class="preset-btn" />
+                      <q-btn size="sm" color="accent" icon="3d_rotation" label="等轴视图" 
+                        @click="setCameraPreset('isometric')" class="preset-btn" />
+                    </div>
+                  </div>
+
+                  <!-- 相机控制按钮 -->
+                  <div class="camera-control-section">
+                    <div class="section-title">
+                      <q-icon name="tune" size="sm" color="orange" />
+                      <span>快捷操作</span>
+                    </div>
+                    <div class="action-buttons">
+                      <q-btn size="sm" color="primary" icon="refresh" label="重置相机" 
+                        @click="resetCamera" />
+                      <q-btn size="sm" color="secondary" icon="fit_screen" label="适应模型" 
+                        @click="fitCameraToAllModels" />
+                      <q-btn size="sm" color="positive" icon="save" label="保存视角" 
+                        @click="saveCameraView" />
+                      <q-btn size="sm" color="warning" icon="restore" label="恢复视角" 
+                        @click="restoreCameraView" :disable="!savedCameraView" />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </q-card-section>
@@ -516,6 +817,8 @@
             @click="showModelPanel = !showModelPanel" />
           <q-btn color="orange" icon="lightbulb" :label="showLightingPanel ? '关闭光照控制面板' : '开启光照控制面板'"
             @click="toggleLightingSidebar" :disable="!modelLoaded" />
+          <q-btn color="teal" icon="videocam" :label="showCameraPanel ? '关闭相机控制面板' : '开启相机控制面板'"
+            @click="toggleCameraSidebar" :disable="!modelLoaded" />
         </div>
 
         <!-- 文件选择（隐藏） -->
@@ -613,6 +916,9 @@
               <li><strong>滚轮缩放：</strong> 鼠标滚轮缩放场景</li>
               <li><strong>右键平移：</strong> 右键拖拽平移视角</li>
               <li><strong>模型位置调整：</strong> 打开"模型管理面板"，使用滑块精确控制模型位置、旋转和缩放</li>
+              <li><strong>精细调整：</strong> 使用 +/- 按钮进行精细位置调整（双箭头：0.01，单箭头：0.1）</li>
+              <li><strong>缩放范围：</strong> 模型缩放支持从0.01x到50x，满足各种尺寸需求</li>
+              <li><strong>位置范围：</strong> X/Z轴支持-20到20，Y轴支持-10到20的调整范围</li>
               <li><strong>光照控制：</strong> 点击"光照控制面板"调整室内光照效果</li>
             </ul>
 
@@ -752,7 +1058,7 @@ const fileInput = ref(null)
 const objFileInput = ref(null)
 const mtlFileInput = ref(null)
 const textureFileInput = ref(null)
-const canvasHeight = ref(500)
+const canvasHeight = ref(600)
 const loading = ref(false)
 const loadingProgress = ref(0)
 const error = ref('')
@@ -791,7 +1097,10 @@ const lightingControls = ref({
 const showLightingPanel = ref(false)
 const showLightMarkers = ref(false)
 
-// 展开状态控制
+// 相机控制面板显示状态
+const showCameraPanel = ref(false)
+
+// 光源位置控制展开状态
 const expandedLights = ref({
   directional: false,
   point1: false,
@@ -799,6 +1108,15 @@ const expandedLights = ref({
   point3: false,
   hemisphere: false
 })
+
+// 相机控制参数
+const cameraControls = ref({
+  position: { x: 3, y: 3, z: 3 },
+  target: { x: 0, y: 0, z: 0 }
+})
+
+// 保存的相机视角
+const savedCameraView = ref(null)
 
 // Three.js 对象
 let THREE = null
@@ -819,6 +1137,20 @@ let modelCounter = 0
 // 性能优化相关
 let renderRequested = false
 
+// 拖拽功能相关变量
+let isDragging = false
+let draggedModel = null
+let dragStartPosition = { x: 0, y: 0 }
+let dragPlane = null
+let raycaster = null
+let dragThrottleTimer = null
+let dragRenderLoop = null
+
+// 持续点击功能相关变量
+let continuousClickTimer = null
+let continuousClickInterval = null
+let isMouseDown = false
+
 // 创建模型数据结构
 function createModelData(name, mesh, animations = []) {
   modelCounter++
@@ -833,6 +1165,7 @@ function createModelData(name, mesh, animations = []) {
     scale: { x: 1, y: 1, z: 1 },
     boundingBox: null,
     originalPosition: { x: 0, y: 0, z: 0 },
+    dragEnabled: false, // 拖拽功能开关
     createdAt: new Date().toISOString()
   }
 }
@@ -909,6 +1242,12 @@ async function initThreeJS() {
 
     // 添加光照
     setupLighting()
+
+    // 初始化拖拽相关组件
+    initDragComponents()
+
+    // 添加鼠标事件监听
+    setupMouseEvents()
 
     // 初始渲染
     requestRenderIfNotRequested()
@@ -2182,6 +2521,330 @@ function updateModelTransform(modelId, transform) {
   }
 }
 
+// 精细调整模型位置
+function adjustPosition(modelId, axis, delta) {
+  const modelData = loadedModels.value.find(m => m.id === modelId)
+  if (modelData) {
+    // 根据轴向更新位置
+    modelData.position[axis] = parseFloat((modelData.position[axis] + delta).toFixed(2))
+    
+    // 限制范围
+    if (axis === 'x' || axis === 'z') {
+      modelData.position[axis] = Math.max(-20, Math.min(20, modelData.position[axis]))
+    } else if (axis === 'y') {
+      modelData.position[axis] = Math.max(-10, Math.min(20, modelData.position[axis]))
+    }
+    
+    // 更新模型变换
+    updateModelTransform(modelId, { position: modelData.position })
+  }
+}
+
+// 精细调整模型缩放
+function adjustScale(modelId, delta) {
+  const modelData = loadedModels.value.find(m => m.id === modelId)
+  if (modelData) {
+    // 计算新的缩放值
+    let newScale = parseFloat((modelData.scale.x + delta).toFixed(2))
+    
+    // 限制范围（最小0.01，最大50）
+    newScale = Math.max(0.01, Math.min(50, newScale))
+    
+    // 均匀缩放
+    modelData.scale.x = newScale
+    modelData.scale.y = newScale
+    modelData.scale.z = newScale
+    
+    // 更新模型变换
+    updateModelTransform(modelId, { scale: modelData.scale })
+  }
+}
+
+// 精细调整模型旋转
+function adjustRotation(modelId, axis, delta) {
+  const modelData = loadedModels.value.find(m => m.id === modelId)
+  if (modelData) {
+    // 根据轴向更新旋转（单位：弧度）
+    modelData.rotation[axis] = parseFloat((modelData.rotation[axis] + delta).toFixed(2))
+    
+    // 限制范围在 -π 到 π 之间
+    if (modelData.rotation[axis] > Math.PI) {
+      modelData.rotation[axis] -= 2 * Math.PI
+    } else if (modelData.rotation[axis] < -Math.PI) {
+      modelData.rotation[axis] += 2 * Math.PI
+    }
+    
+    // 更新模型变换
+    updateModelTransform(modelId, { rotation: modelData.rotation })
+  }
+}
+
+// 切换模型拖拽功能
+function toggleModelDrag(modelId) {
+  const modelData = loadedModels.value.find(m => m.id === modelId)
+  if (modelData) {
+    modelData.dragEnabled = !modelData.dragEnabled
+    
+    // 如果启用拖拽，禁用其他模型的拖拽
+    if (modelData.dragEnabled) {
+      loadedModels.value.forEach(model => {
+        if (model.id !== modelId) {
+          model.dragEnabled = false
+        }
+      })
+    }
+    
+    console.log(`模型 "${modelData.name}" 拖拽功能${modelData.dragEnabled ? '已启用' : '已禁用'}`)
+  }
+}
+
+// 初始化拖拽相关组件
+function initDragComponents() {
+  if (!THREE) return
+  
+  // 创建射线检测器
+  raycaster = new THREE.Raycaster()
+  
+  // 创建拖拽平面（水平面，Y=0）
+  const planeGeometry = new THREE.PlaneGeometry(1000, 1000)
+  planeGeometry.rotateX(-Math.PI / 2) // 旋转使其水平
+  const planeMaterial = new THREE.MeshBasicMaterial({ 
+    visible: false, // 不可见
+    side: THREE.DoubleSide 
+  })
+  dragPlane = new THREE.Mesh(planeGeometry, planeMaterial)
+  scene.add(dragPlane)
+  
+  console.log('拖拽组件初始化完成')
+}
+
+// 设置鼠标事件监听
+function setupMouseEvents() {
+  if (!renderer || !renderer.domElement) return
+  
+  const canvas = renderer.domElement
+  
+  // 鼠标按下事件
+  canvas.addEventListener('mousedown', onMouseDown, false)
+  // 鼠标移动事件
+  canvas.addEventListener('mousemove', onMouseMove, false)
+  // 鼠标抬起事件
+  canvas.addEventListener('mouseup', onMouseUp, false)
+  // 鼠标离开事件
+  canvas.addEventListener('mouseleave', onMouseUp, false)
+  
+  console.log('鼠标事件监听已设置')
+}
+
+// 鼠标按下处理
+function onMouseDown(event) {
+  if (!raycaster || !camera) return
+  
+  // 获取启用拖拽的模型
+  const dragEnabledModel = loadedModels.value.find(m => m.dragEnabled && m.visible)
+  if (!dragEnabledModel) return
+  
+  // 计算鼠标位置（归一化设备坐标）
+  const rect = renderer.domElement.getBoundingClientRect()
+  const mouse = new THREE.Vector2()
+  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
+  
+  // 设置射线
+  raycaster.setFromCamera(mouse, camera)
+  
+  // 检测与模型的交集
+  const intersects = raycaster.intersectObject(dragEnabledModel.mesh, true)
+  
+  if (intersects.length > 0) {
+    // 开始拖拽
+    isDragging = true
+    draggedModel = dragEnabledModel
+    dragStartPosition.x = event.clientX
+    dragStartPosition.y = event.clientY
+    
+    // 禁用轨道控制器
+    if (controls) {
+      controls.enabled = false
+    }
+    
+    // 设置拖拽平面位置
+    if (dragPlane) {
+      dragPlane.position.y = draggedModel.mesh.position.y
+    }
+    
+    // 改变鼠标样式
+    renderer.domElement.style.cursor = 'grabbing'
+    
+    // 启动拖拽专用渲染循环
+    startDragRenderLoop()
+    
+    console.log(`开始拖拽模型: ${draggedModel.name}`)
+  }
+}
+
+// 鼠标移动处理（高性能优化）
+function onMouseMove(event) {
+  if (!isDragging || !draggedModel || !raycaster || !dragPlane) return
+  
+  // 直接执行拖拽，不使用节流（requestAnimationFrame已经提供了节流）
+  performDrag(event)
+}
+
+// 执行拖拽操作（高性能版本）
+function performDrag(event) {
+  if (!isDragging || !draggedModel) return
+  
+  // 计算鼠标位置
+  const rect = renderer.domElement.getBoundingClientRect()
+  const mouse = new THREE.Vector2()
+  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
+  
+  // 设置射线
+  raycaster.setFromCamera(mouse, camera)
+  
+  // 与拖拽平面求交
+  const intersects = raycaster.intersectObject(dragPlane)
+  
+  if (intersects.length > 0) {
+    const intersectPoint = intersects[0].point
+    
+    // 计算新位置并限制范围
+    let newX = parseFloat(intersectPoint.x.toFixed(2))
+    let newZ = parseFloat(intersectPoint.z.toFixed(2))
+    newX = Math.max(-20, Math.min(20, newX))
+    newZ = Math.max(-20, Math.min(20, newZ))
+    
+    // 直接更新3D对象位置（避免响应式更新）
+    draggedModel.mesh.position.x = newX
+    draggedModel.mesh.position.z = newZ
+    
+    // 使用节流更新数据模型（降低频率，避免频繁的Vue响应式更新）
+    if (dragThrottleTimer) {
+      clearTimeout(dragThrottleTimer)
+    }
+    
+    dragThrottleTimer = setTimeout(() => {
+      // 批量更新数据模型
+      draggedModel.position.x = newX
+      draggedModel.position.z = newZ
+    }, 50) // 降低数据更新频率，减少Vue响应式开销
+  }
+}
+
+// 鼠标抬起处理
+function onMouseUp() {
+  if (isDragging) {
+    const finalDraggedModel = draggedModel
+    
+    isDragging = false
+    draggedModel = null
+    
+    // 停止拖拽渲染循环
+    stopDragRenderLoop()
+    
+    // 重新启用轨道控制器
+    if (controls) {
+      controls.enabled = true
+    }
+    
+    // 恢复鼠标样式
+    renderer.domElement.style.cursor = 'default'
+    
+    // 清理节流定时器并最终同步数据
+    if (dragThrottleTimer) {
+      clearTimeout(dragThrottleTimer)
+      dragThrottleTimer = null
+    }
+    
+    // 最终同步数据模型和3D对象位置
+    if (finalDraggedModel) {
+      finalDraggedModel.position.x = parseFloat(finalDraggedModel.mesh.position.x.toFixed(2))
+      finalDraggedModel.position.z = parseFloat(finalDraggedModel.mesh.position.z.toFixed(2))
+    }
+    
+    // 恢复正常渲染
+    requestRenderIfNotRequested()
+    
+    console.log('拖拽结束')
+  }
+}
+
+// 启动拖拽专用渲染循环（高性能）
+function startDragRenderLoop() {
+  if (dragRenderLoop) return // 避免重复启动
+  
+  function dragRender() {
+    if (!isDragging) return // 拖拽结束时自动停止
+    
+    // 更新控制器
+    if (controls) {
+      controls.update()
+    }
+    
+    // 渲染场景
+    if (renderer && scene && camera) {
+      renderer.render(scene, camera)
+    }
+    
+    // 继续下一帧
+    dragRenderLoop = requestAnimationFrame(dragRender)
+  }
+  
+  dragRenderLoop = requestAnimationFrame(dragRender)
+  console.log('拖拽渲染循环已启动')
+}
+
+// 停止拖拽渲染循环
+function stopDragRenderLoop() {
+  if (dragRenderLoop) {
+    cancelAnimationFrame(dragRenderLoop)
+    dragRenderLoop = null
+    console.log('拖拽渲染循环已停止')
+  }
+}
+
+// 开始持续点击
+function startContinuousClick(actionFunction) {
+  // 防止重复启动
+  if (continuousClickTimer || isMouseDown) return
+  
+  isMouseDown = true
+  
+  // 延迟启动持续操作（避免单击误触发）
+  continuousClickTimer = setTimeout(() => {
+    if (!isMouseDown) return
+    
+    // 开始持续执行操作
+    continuousClickInterval = setInterval(() => {
+      if (!isMouseDown) {
+        stopContinuousClick()
+        return
+      }
+      actionFunction()
+    }, 100) // 每100ms执行一次，提供流畅的持续操作体验
+    
+  }, 300) // 300ms后开始持续操作，避免误触发
+}
+
+// 停止持续点击
+function stopContinuousClick() {
+  isMouseDown = false
+  
+  // 清理延迟定时器
+  if (continuousClickTimer) {
+    clearTimeout(continuousClickTimer)
+    continuousClickTimer = null
+  }
+  
+  // 清理持续操作定时器
+  if (continuousClickInterval) {
+    clearInterval(continuousClickInterval)
+    continuousClickInterval = null
+  }
+}
+
 function resetModelPosition(modelId) {
   const modelData = loadedModels.value.find(m => m.id === modelId)
   if (modelData) {
@@ -2302,6 +2965,163 @@ function fitCameraToAllModels() {
   
   // 触发渲染更新
   requestRenderIfNotRequested()
+}
+
+function resetCamera() {
+  if (camera && controls) {
+    camera.position.set(3, 3, 3)
+    controls.target.set(0, 0, 0)
+    controls.update()
+    
+    // 同步更新控制面板数值
+    cameraControls.value.position = { x: 3, y: 3, z: 3 }
+    cameraControls.value.target = { x: 0, y: 0, z: 0 }
+    
+    requestRenderIfNotRequested()
+  }
+}
+
+// 切换相机控制面板
+function toggleCameraSidebar() {
+  showCameraPanel.value = !showCameraPanel.value
+  
+  // 同步当前相机状态到控制面板
+  if (showCameraPanel.value && camera && controls) {
+    cameraControls.value.position.x = parseFloat(camera.position.x.toFixed(1))
+    cameraControls.value.position.y = parseFloat(camera.position.y.toFixed(1))
+    cameraControls.value.position.z = parseFloat(camera.position.z.toFixed(1))
+    
+    cameraControls.value.target.x = parseFloat(controls.target.x.toFixed(1))
+    cameraControls.value.target.y = parseFloat(controls.target.y.toFixed(1))
+    cameraControls.value.target.z = parseFloat(controls.target.z.toFixed(1))
+  }
+}
+
+// 更新相机位置
+function updateCameraPosition() {
+  if (camera && controls) {
+    camera.position.set(
+      cameraControls.value.position.x,
+      cameraControls.value.position.y,
+      cameraControls.value.position.z
+    )
+    controls.update()
+    requestRenderIfNotRequested()
+  }
+}
+
+// 更新相机目标
+function updateCameraTarget() {
+  if (controls) {
+    controls.target.set(
+      cameraControls.value.target.x,
+      cameraControls.value.target.y,
+      cameraControls.value.target.z
+    )
+    controls.update()
+    requestRenderIfNotRequested()
+  }
+}
+
+// 设置相机预设视角
+function setCameraPreset(preset) {
+  if (!camera || !controls) return
+  
+  let position, target
+  
+  switch (preset) {
+    case 'front':
+      position = { x: 0, y: 0, z: 8 }
+      target = { x: 0, y: 0, z: 0 }
+      break
+    case 'back':
+      position = { x: 0, y: 0, z: -8 }
+      target = { x: 0, y: 0, z: 0 }
+      break
+    case 'left':
+      position = { x: -8, y: 0, z: 0 }
+      target = { x: 0, y: 0, z: 0 }
+      break
+    case 'right':
+      position = { x: 8, y: 0, z: 0 }
+      target = { x: 0, y: 0, z: 0 }
+      break
+    case 'top':
+      position = { x: 0, y: 8, z: 0 }
+      target = { x: 0, y: 0, z: 0 }
+      break
+    case 'bottom':
+      position = { x: 0, y: -8, z: 0 }
+      target = { x: 0, y: 0, z: 0 }
+      break
+    case 'isometric':
+      position = { x: 5, y: 5, z: 5 }
+      target = { x: 0, y: 0, z: 0 }
+      break
+    default:
+      return
+  }
+  
+  // 更新相机
+  camera.position.set(position.x, position.y, position.z)
+  controls.target.set(target.x, target.y, target.z)
+  controls.update()
+  
+  // 同步控制面板
+  cameraControls.value.position = { ...position }
+  cameraControls.value.target = { ...target }
+  
+  requestRenderIfNotRequested()
+  
+  console.log(`已切换到${preset}视角`)
+}
+
+// 保存当前相机视角
+function saveCameraView() {
+  if (camera && controls) {
+    savedCameraView.value = {
+      position: {
+        x: camera.position.x,
+        y: camera.position.y,
+        z: camera.position.z
+      },
+      target: {
+        x: controls.target.x,
+        y: controls.target.y,
+        z: controls.target.z
+      }
+    }
+    
+    $q.notify({
+      type: 'positive',
+      message: '相机视角已保存',
+      position: 'top'
+    })
+  }
+}
+
+// 恢复保存的相机视角
+function restoreCameraView() {
+  if (savedCameraView.value && camera && controls) {
+    const saved = savedCameraView.value
+    
+    // 更新相机
+    camera.position.set(saved.position.x, saved.position.y, saved.position.z)
+    controls.target.set(saved.target.x, saved.target.y, saved.target.z)
+    controls.update()
+    
+    // 同步控制面板
+    cameraControls.value.position = { ...saved.position }
+    cameraControls.value.target = { ...saved.target }
+    
+    requestRenderIfNotRequested()
+    
+    $q.notify({
+      type: 'positive',
+      message: '相机视角已恢复',
+      position: 'top'
+    })
+  }
 }
 
 // 调试场景状态
@@ -2788,13 +3608,6 @@ async function handleFileSelect(event) {
   }
 }
 
-// 重置相机
-function resetCamera() {
-  if (currentLoadedModel) {
-    fitCameraToModel(currentLoadedModel)
-  }
-}
-
 // 播放动画
 function playAnimation(animationName) {
   if (!animationMixer || !animationName) return
@@ -2865,6 +3678,27 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
+
+  // 清理拖拽事件监听器
+  if (renderer && renderer.domElement) {
+    const canvas = renderer.domElement
+    canvas.removeEventListener('mousedown', onMouseDown, false)
+    canvas.removeEventListener('mousemove', onMouseMove, false)
+    canvas.removeEventListener('mouseup', onMouseUp, false)
+    canvas.removeEventListener('mouseleave', onMouseUp, false)
+  }
+
+  // 清理拖拽相关变量
+  if (dragThrottleTimer) {
+    clearTimeout(dragThrottleTimer)
+    dragThrottleTimer = null
+  }
+  
+  // 停止拖拽渲染循环
+  stopDragRenderLoop()
+
+  // 清理持续点击相关定时器
+  stopContinuousClick()
 
   // 清理 Three.js 资源
   if (animationId) {
@@ -2939,17 +3773,70 @@ onUnmounted(() => {
   position: absolute;
   top: 0;
   right: 0;
-  width: 320px;
+  width: 280px;
   height: 100%;
-  background: linear-gradient(135deg, rgba(250, 250, 250, 0.98) 0%, rgba(255, 255, 255, 0.98) 100%);
+  background: linear-gradient(135deg, rgba(250, 250, 250, 0.95) 0%, rgba(255, 255, 255, 0.95) 100%);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border-left: 2px solid rgba(224, 224, 224, 0.8);
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  overflow-y: auto;
+}
+
+/* 相机控制侧边栏 - 作为3D视图内的覆盖层 */
+.camera-sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(240, 248, 255, 0.95) 0%, rgba(230, 245, 255, 0.95) 100%);
+  backdrop-filter: blur(10px);
+  border-right: 2px solid rgba(0, 150, 136, 0.3);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 9;
+  overflow-y: auto;
+}
+
+.camera-controls {
+  padding: 0;
+}
+
+.camera-control-section {
+  margin-bottom: 20px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  border-left: 3px solid #009688;
+}
+
+.section-title {
   display: flex;
-  flex-direction: column;
-  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
-  border-radius: 0 6px 6px 0;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #00695c;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(0, 150, 136, 0.2);
+}
+
+.preset-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.preset-btn {
+  font-size: 0.75em;
+  min-height: 32px;
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
 }
 
 /* 模型管理侧边栏 - 作为3D视图内的覆盖层（左侧） */
@@ -2957,7 +3844,7 @@ onUnmounted(() => {
   position: absolute;
   top: 0;
   left: 0;
-  width: 320px;
+  width: 380px;
   height: 100%;
   background: linear-gradient(135deg, rgba(240, 248, 255, 0.98) 0%, rgba(255, 255, 255, 0.98) 100%);
   backdrop-filter: blur(10px);
@@ -2993,6 +3880,8 @@ onUnmounted(() => {
   flex: 1;
   overflow-y: auto;
   padding: 0;
+  /* 确保内容不会超出容器 */
+  min-height: 0;
 }
 
 /* 侧边栏滚动条 */
@@ -3365,8 +4254,7 @@ onUnmounted(() => {
 
 .model-list {
   padding: 0 16px;
-  max-height: calc(100vh - 300px);
-  overflow-y: auto;
+  /* 移除独立滚动，让父容器统一管理 */
 }
 
 .no-models {
@@ -3423,13 +4311,13 @@ onUnmounted(() => {
 }
 
 .model-transforms {
-  padding: 12px;
+  padding: 8px;
   border-top: 1px solid rgba(25, 118, 210, 0.1);
   background: rgba(25, 118, 210, 0.02);
 }
 
 .transform-section {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .transform-title {
@@ -3439,19 +4327,33 @@ onUnmounted(() => {
   margin-bottom: 8px;
   padding-bottom: 4px;
   border-bottom: 1px solid rgba(25, 118, 210, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 拖拽切换按钮样式 */
+.drag-toggle-btn {
+  transition: all 0.3s ease;
+}
+
+.drag-toggle-btn:hover {
+  transform: scale(1.1);
 }
 
 .transform-controls {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .transform-control {
-  display: flex;
+  display: grid;
+  grid-template-columns: 24px 1fr 40px;
+  grid-template-rows: auto;
   align-items: center;
-  gap: 8px;
-  padding: 4px;
+  gap: 6px;
+  padding: 6px 4px;
   background: rgba(255, 255, 255, 0.6);
   border-radius: 4px;
 }
@@ -3459,22 +4361,70 @@ onUnmounted(() => {
 .transform-label {
   font-size: 0.75em;
   font-weight: bold;
-  min-width: 40px;
   text-align: center;
   color: #666;
+  grid-column: 1;
+  grid-row: 1;
 }
 
 .transform-value {
   font-size: 0.75em;
   font-weight: bold;
   color: #1976d2;
-  min-width: 35px;
   text-align: right;
+  grid-column: 3;
+  grid-row: 1;
 }
 
+/* 滑块和按钮容器 */
 .transform-control .q-slider {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+}
+
+/* 按钮组放在第二行，跨越所有列 */
+.transform-control .control-buttons {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+/* 控制按钮组样式 */
+.control-buttons {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.control-buttons .q-btn {
+  min-width: 28px !important;
+  min-height: 24px !important;
+  padding: 3px 6px !important;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  font-size: 0.7em;
+}
+
+.control-buttons .q-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.control-buttons .q-btn:active {
+  transform: scale(0.95);
+}
+
+/* 按钮分组样式 - 左右各一组 */
+.control-buttons::before {
+  content: '';
   flex: 1;
-  margin: 0 4px;
+}
+
+.control-buttons::after {
+  content: '';
+  flex: 1;
 }
 
 .model-reset {
@@ -3491,6 +4441,16 @@ onUnmounted(() => {
     margin: 0;
   }
 
+  .model-sidebar {
+    width: 100%;
+    height: 50%;
+    bottom: 0;
+    top: auto;
+    border-right: none;
+    border-top: 2px solid rgba(25, 118, 210, 0.3);
+    border-radius: 8px 8px 0 0;
+  }
+
   .lighting-sidebar {
     position: absolute;
     top: auto;
@@ -3503,6 +4463,20 @@ onUnmounted(() => {
     border-top: 2px solid rgba(224, 224, 224, 0.8);
     border-radius: 8px 8px 0 0;
     background: linear-gradient(135deg, rgba(250, 250, 250, 0.95) 0%, rgba(255, 255, 255, 0.95) 100%);
+  }
+
+  .camera-sidebar {
+    position: absolute;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 60%;
+    border-right: none;
+    border-top: 2px solid rgba(0, 150, 136, 0.3);
+    border-radius: 8px 8px 0 0;
+    background: linear-gradient(135deg, rgba(240, 248, 255, 0.95) 0%, rgba(230, 245, 255, 0.95) 100%);
   }
 
   .preset-grid {
