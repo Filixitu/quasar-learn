@@ -173,7 +173,7 @@
 </template>
 
 <script>
-import { ref, reactive, inject } from 'vue'
+import { ref, reactive } from 'vue'
 import { useQuasar } from 'quasar'
 import pluginManager from 'src/services/cordova/PluginManager.js'
 
@@ -181,7 +181,6 @@ export default {
   name: 'CameraDemo',
   setup() {
     const $q = useQuasar()
-    const cordova = inject('cordova')
     
     const takingPhoto = ref(false)
     const selectingPhoto = ref(false)
@@ -196,85 +195,39 @@ export default {
       targetHeight: 300
     })
 
-    const takePicture = () => {
+    const takePicture = async () => {
       takingPhoto.value = true
-      
-      // 使用标准Cordova Camera API
-      if (cordova.isCordova && navigator.camera) {
-        navigator.camera.getPicture(
-          (imageData) => {
-            // 成功回调
-            const imageSrc = `data:image/jpeg;base64,${imageData}`
-            currentImage.value = imageSrc
-            
-            // 添加到历史记录
-            imageHistory.value.unshift({
-              data: imageSrc,
-              timestamp: Date.now(),
-              source: 'camera'
-            })
-            
-            // 限制历史记录数量
-            if (imageHistory.value.length > 10) {
-              imageHistory.value = imageHistory.value.slice(0, 10)
-            }
-            
-            $q.notify({
-              type: 'positive',
-              message: '拍照成功！',
-              position: 'top'
-            })
-            takingPhoto.value = false
-          },
-          (error) => {
-            // 失败回调
-            console.error('拍照失败:', error)
-            $q.notify({
-              type: 'negative',
-              message: '拍照失败: ' + (error.message || error),
-              position: 'top'
-            })
-            takingPhoto.value = false
-          },
-          {
-            // 相机选项
-            quality: cameraOptions.quality,
-            destinationType: Camera.DestinationType.DATA_URL,
-            sourceType: Camera.PictureSourceType.CAMERA,
-            encodingType: Camera.EncodingType.JPEG,
-            targetWidth: cameraOptions.targetWidth,
-            targetHeight: cameraOptions.targetHeight
-          }
-        )
-      } else {
-        // Web环境回退到文件选择器
-        pluginManager.camera.takePicture(cameraOptions)
-          .then(imageData => {
-            currentImage.value = imageData
-            imageHistory.value.unshift({
-              data: imageData,
-              timestamp: Date.now(),
-              source: 'camera'
-            })
-            if (imageHistory.value.length > 10) {
-              imageHistory.value = imageHistory.value.slice(0, 10)
-            }
-            $q.notify({
-              type: 'positive',
-              message: '图片选择成功！',
-              position: 'top'
-            })
-          })
-          .catch(error => {
-            $q.notify({
-              type: 'negative',
-              message: '操作失败: ' + (error.message || error),
-              position: 'top'
-            })
-          })
-          .finally(() => {
-            takingPhoto.value = false
-          })
+      try {
+        // 统一使用 PluginManager 处理 Camera API
+        const imageData = await pluginManager.camera.takePicture(cameraOptions)
+        currentImage.value = imageData
+        
+        // 添加到历史记录
+        imageHistory.value.unshift({
+          data: imageData,
+          timestamp: Date.now(),
+          source: 'camera'
+        })
+        
+        // 限制历史记录数量
+        if (imageHistory.value.length > 10) {
+          imageHistory.value = imageHistory.value.slice(0, 10)
+        }
+        
+        $q.notify({
+          type: 'positive',
+          message: '拍照成功！',
+          position: 'top'
+        })
+      } catch (error) {
+        console.error('拍照失败:', error)
+        $q.notify({
+          type: 'negative',
+          message: '拍照失败: ' + (error.message || error),
+          position: 'top'
+        })
+      } finally {
+        takingPhoto.value = false
       }
     }
 

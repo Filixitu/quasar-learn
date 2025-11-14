@@ -16,7 +16,7 @@ class PluginManager {
   battery = {
     // 获取电池状态
     getStatus: () => {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         if (!cordovaService.isPluginAvailable('battery')) {
           // Web环境模拟数据
           resolve({
@@ -33,11 +33,6 @@ class PluginManager {
             isPlugged: info.isPlugged,
             status: info.isPlugged ? 'charging' : 'discharging'
           })
-        }
-
-        const onError = (error) => {
-          cordovaService.handleError(error, 'Battery')
-          reject(error)
         }
 
         window.addEventListener('batterystatus', onSuccess, false)
@@ -105,11 +100,12 @@ class PluginManager {
           return
         }
 
+        // Camera 常量值
         const cameraOptions = {
           quality: options.quality || 75,
-          destinationType: Camera.DestinationType.DATA_URL,
-          sourceType: Camera.PictureSourceType.CAMERA,
-          encodingType: Camera.EncodingType.JPEG,
+          destinationType: 0, // Camera.DestinationType.DATA_URL
+          sourceType: 1, // Camera.PictureSourceType.CAMERA
+          encodingType: 0, // Camera.EncodingType.JPEG
           targetWidth: options.targetWidth || 300,
           targetHeight: options.targetHeight || 300,
           ...options
@@ -150,11 +146,12 @@ class PluginManager {
           return
         }
 
+        // Camera 常量值
         const cameraOptions = {
           quality: options.quality || 75,
-          destinationType: Camera.DestinationType.DATA_URL,
-          sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-          encodingType: Camera.EncodingType.JPEG,
+          destinationType: 0, // Camera.DestinationType.DATA_URL
+          sourceType: 0, // Camera.PictureSourceType.PHOTOLIBRARY
+          encodingType: 0, // Camera.EncodingType.JPEG
           targetWidth: options.targetWidth || 300,
           targetHeight: options.targetHeight || 300,
           ...options
