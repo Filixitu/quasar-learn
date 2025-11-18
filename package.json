@@ -19,7 +19,8 @@
     "build-ios": "quasar build -m cordova -T ios",
     "build-ios-device": "quasar build -m cordova -T ios --device",
     "dev-android": "quasar dev -m cordova -T android",
-    "build-android": "quasar build -m cordova -T android"
+    "build-android": "quasar build -m cordova -T android",
+    "build:cordova": "quasar build -m cordova -T android"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",

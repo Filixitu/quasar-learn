@@ -1,0 +1,29 @@
+{
+  "apps": [
+    {
+      "appId": "io.filixitu.quasarlearn",
+      "name": "Quasar Learn App",
+      "integrations": {
+        "cordova": {
+          "path": "src-cordova"
+        }
+      },
+      "environments": {
+        "production": {
+          "cordova": {
+            "preparationCommand": "npm run build:cordova",
+            "platformOptions": {
+              "android": {
+                "keystore": {
+                  "keyAlias": "$ANDROID_RELEASE_KEY_ALIAS",
+                  "keystorePassword": "$ANDROID_RELEASE_KEYSTORE_PASSWORD",
+                  "keyPassword": "$ANDROID_RELEASE_KEY_PASSWORD"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
