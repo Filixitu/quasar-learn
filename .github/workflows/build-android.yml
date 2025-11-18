@@ -16,67 +16,81 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: '18'
         cache: 'npm'
         
     - name: Setup Java
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
-        java-version: '17'
+        java-version: '11'
         
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       
-    - name: Install dependencies
+    - name: Install global dependencies
       run: |
-        npm ci
-        npm install -g @quasar/cli cordova
+        npm install -g @quasar/cli@latest cordova@latest
         
-    - name: Verify Cordova setup
+    - name: Install project dependencies
+      run: npm ci
+      
+    - name: Verify environment
       run: |
-        echo "Cordova version:"
-        cordova --version
-        echo "Quasar version:"
-        quasar --version
-        echo "Node version:"
+        echo "=== Environment Check ==="
         node --version
-        echo "NPM version:"
         npm --version
-      
-    - name: Accept Android SDK licenses
-      run: yes | sdkmanager --licenses
-      
-    - name: Install Android SDK components
-      run: |
-        sdkmanager "platform-tools" "build-tools;35.0.0" "platforms;android-35"
+        cordova --version
+        quasar --version
+        echo "ANDROID_HOME: $ANDROID_HOME"
+        echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
         
-    - name: Build Quasar Cordova App
-      run: |
-        quasar build -m cordova -T android
+    - name: Accept Android licenses
+      run: yes | sdkmanager --licenses >/dev/null 2>&1
       
-    - name: List build outputs (debug)
+    - name: Install required Android components
       run: |
-        echo "Listing src-cordova directory structure:"
-        find src-cordova -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
-        ls -la src-cordova/platforms/android/app/build/outputs/ 2>/dev/null || echo "Build outputs directory not found"
-      
-    - name: Upload Debug APK
+        sdkmanager "platform-tools" "build-tools;34.0.0" "platforms;android-34"
+        sdkmanager "cmdline-tools;latest"
+        
+    - name: Prepare Cordova project
+      run: |
+        echo "=== Preparing Cordova Project ==="
+        cd src-cordova
+        
+        # Remove existing platform if any
+        cordova platform remove android 2>/dev/null || true
+        
+        # Add Android platform
+        cordova platform add android@latest
+        
+        # Verify platform
+        cordova platform list
+        
+        # Check requirements
+        cordova requirements android || true
+        
+    - name: Build Android APK
+      run: |
+        echo "=== Building Android APK ==="
+        
+        # Build using Quasar
+        quasar build -m cordova -T android --debug
+        
+    - name: Find and list APK files
+      run: |
+        echo "=== Searching for APK files ==="
+        find . -name "*.apk" -type f -exec ls -la {} \; || echo "No APK files found"
+        
+        echo "=== Directory structure ==="
+        ls -la src-cordova/platforms/android/app/build/outputs/ 2>/dev/null || echo "Build outputs not found"
+        
+    - name: Upload APK artifacts
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: android-debug-apk
+        name: android-apk-files
         path: |
-          src-cordova/platforms/android/app/build/outputs/apk/debug/*.apk
-          src-cordova/platforms/android/app/build/outputs/apk/**/debug/*.apk
+          **/*.apk
         if-no-files-found: warn
-        
-    - name: Upload Release APK (if exists)
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: android-release-apk
-        path: |
-          src-cordova/platforms/android/app/build/outputs/apk/release/*.apk
-          src-cordova/platforms/android/app/build/outputs/apk/**/release/*.apk
-        if-no-files-found: ignore
+        retention-days: 30
